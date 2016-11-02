@@ -1,2 +1,0 @@
-# learning
-Изучение Angular2
