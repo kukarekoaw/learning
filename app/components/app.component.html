@@ -30,14 +30,17 @@
 </div>
 
 <div class="ui main text container">
-    <h1 class="ui header">На заглушку - динамика температур из ванной </h1>
-    <chart-example>Запрос данных ...</chart-example>
+    <!--<h1 class="ui header">На заглушку - динамика температур из ванной </h1>-->
+    <chart-example *ngFor="let device of devices"
+        [name] = "device">
+    </chart-example>
 
 </div>
 
 <div class="ui vertical footer segment">
     <div class="ui center aligned container">
         <div class="ui stackable divided grid">
+            <!--
             <div class="three wide column">
                 <h4 class="ui  header">Group 1</h4>
                 <div class="ui  link list">
@@ -69,6 +72,8 @@
                 <h4 class="ui  header">Footer Header</h4>
                 <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
             </div>
+                        -->
+
         </div>
         <div class="ui  section divider"></div>
         <img src="assets/images/smarthome3.png" class="ui centered mini image">
