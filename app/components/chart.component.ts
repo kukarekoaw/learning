@@ -15,16 +15,25 @@ export class ChartComponent implements OnInit{
 
     chart : ChartObject;
     options: Object;
-    device:IDevice;
+    device:IDevice
+    timestamp:number;
+    interval: number;
     @Input() name: string;
+    @Input() limit: number;
 
     constructor(private sensorsService:SensorsService) {
         this.sensorsService = sensorsService;
+        this.limit = 10;
+        this.interval = 10;
         this.options = {
             title: {text: ''},
             chart: {zoomType: 'xy', type:'spline'},
             xAxis : { type: 'datetime', ordinal: false},
         }
+        // Запуск таймера обновления данных
+        setInterval(() => {
+            this.updateData();
+        }, 1000*this.interval);
         /*
         setInterval(() => {
             this.dt+= (this.random(10) *1000000);
@@ -47,20 +56,33 @@ export class ChartComponent implements OnInit{
             );
             console.log(this.device);
         });
-
-        this.sensorsService.getData(this.name, 1000).then((data:Array<Array<string>>) =>{
-            //this.chart.addSeries({name : 'Процессор', animation: false})
-            //this.chart.series[0].setData(data['cpu'], true);
-
+        // Получим последние данные по устройству
+        this.sensorsService.getData(this.name, this.limit).then((data:any) =>{
+            // определим последнее время получения данных
+            this.timestamp = data['dt'][data['dt'].length-1][0];
+            // Для зарегистрированных серий установим начальные значения
             this.device.struct.forEach((obj:any) => obj.series.setData(data[obj.name], true))
 
         });
     }
-    random(limit =10):number{return Math.random() * limit;}
+    updateData(){
+        this.sensorsService.getData(this.name, this.limit, this.timestamp / 1000).then((data:any) =>{
+            if (data.dt) {
+                //console.log("Обновление данных ->", data.dt.length);
+                // определим последнее время получения данных
+                this.timestamp = data['dt'][data['dt'].length - 1][0];
+                // Для новых данных добавим значения в серии
 
+                this.device.struct.forEach((sensor: any) =>
+                {
+                    if (data[sensor.name])
+                        data[sensor.name].forEach((point:any) => {sensor.series.addPoint(point)})
+                });
+            }
+            //else console.log("Обновление данных: новых нет");
+        });
 
-
-
+    }
     saveInstance(chartInstance:any) {
         console.log(chartInstance);
         this.chart = chartInstance;

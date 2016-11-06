@@ -10,8 +10,8 @@ export class SensorsService {
 
     constructor(private http: Http) {}
 
-    getData(sensor:string, limit = 100): any {
-        let url = `${this.apiUrl}/${sensor}/last/${limit}`;
+    getData(sensor:string, limit = 100, timestamp = 0): Promise<JSON> {
+        let url = `${this.apiUrl}/${sensor}/last/${limit}/${timestamp}`;
         console.log(url);
         return this.http.get(url)
             .toPromise()

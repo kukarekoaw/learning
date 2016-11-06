@@ -11,6 +11,5 @@ export class AppComponent {
 
     constructor(){
         this.title = 'SmartHome';
-        this.devices = ['rpi_shower'];
     }
 }

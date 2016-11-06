@@ -4,10 +4,10 @@
             <img class="logo" src="assets/images/smarthome3.png">
             {{title}}
         </a>
-        <a href="#" class="item">Дом</a>
-        <a href="#" class="item">Датчики</a>
-        <a href="#" class="item">События</a>
-        <a href="#" class="item">Тревоги</a>
+        <a class="item" routerLink = "/home">Дом</a>
+        <a class="item" routerLink = "/devices">Датчики</a>
+        <a class="item" routerLink = "/events">События</a>
+        <a class="item" routerLink = "/alerts">Тревоги</a>
         <div class="ui simple dropdown item">
             Настройка <i class="dropdown icon"></i>
             <div class="menu">
@@ -30,11 +30,7 @@
 </div>
 
 <div class="ui main text container">
-    <!--<h1 class="ui header">На заглушку - динамика температур из ванной </h1>-->
-    <chart-example *ngFor="let device of devices"
-        [name] = "device">
-    </chart-example>
-
+    <router-outlet></router-outlet>
 </div>
 
 <div class="ui vertical footer segment">
